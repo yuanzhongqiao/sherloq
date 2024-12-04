@@ -1,232 +1,281 @@
-<p align="center">
-  <img src="logo/sherloq.png" width="600px" alt="Sherloq" />
-  <br><b>An open source image forensic toolset</b>
+<div class="Box-sc-g0xbh4-0 QkQOb js-snippet-clipboard-copy-unpositioned" data-hpc="true"><article class="markdown-body entry-content container-lg" itemprop="text"><p align="center" dir="auto">
+  <a target="_blank" rel="noopener noreferrer" href="/GuidoBartoli/sherloq/blob/master/logo/sherloq.png"><img src="/GuidoBartoli/sherloq/raw/master/logo/sherloq.png" width="600px" alt="夏洛克" style="max-width: 100%;" _mstalt="96863" _msthash="205"></a>
+  <br><b _msttexthash="34486387" _msthash="206">开源图像取证工具集</b>
 </p>
-
-# Introduction
-"*Forensic Image Analysis is the application of image science and domain expertise to interpret the content of an image and/or the image itself in legal matters. Major subdisciplines of Forensic Image Analysis with law enforcement applications include: Photogrammetry, Photographic Comparison, Content Analysis, and Image Authentication.*" (Scientific Working Group on Imaging Technologies)
-
-**Sherloq** is a personal research project about implementing a fully integrated environment for digital image forensics. It is not meant as an automatic tool that decide if an image is forged or not (that tool probably will never exist...), but as a companion in experimenting with various algorithms found in the latest research papers and workshops.
-
-While many commercial solutions have high retail prices and often reserved to law enforcement and government agencies only, this toolset aims to be a both an extensible framework and a starting point for anyone interested in making experiments in this particular application of digital signal processing.
-
-I strongly believe that *security-by-obscurity* is the wrong way to offer any kind of forensic service (i.e. "Using this proprietary software I guarantee you that this photo *is* pristine... and you have to trust me!"). Following the open-source philosophy, everyone should be able to try various techniques on their own, gain knowledge and share it to the community... even better if they contribute with code improvements! :)
-
-- [History](#history)
-- [Features](#features)
-- [Screenshots](#screenshots)
-- [Installation](#installation)
-- [Updates](#updates)
-- [Bibliography](#bibliography)
-
-# History
-The first version was written in 2015 using C++11 to build a command line utility with many options, but soon it turned to be too cumbersome and not much interactive. That version could be compiled with CMake after installing OpenCV, Boost and AlgLib libraries. This first proof of concept offered about 80% of planned features (see below for the full list).
-
-While also including novel algorithms, the 2017 version mainly added a Qt-based multi-window GUI to provide a better user experience. Multiple analyses could be shown on screen and a fast zoom/scroll  viewer was implemented for easier image navigation. That project could be compiled with Qt Creator with Qt 5 and OpenCV 3 and covered about 70% of planned features.
-
-Fast-forward to 2020 when I decided to port everything in Python (PySide2 + Matplotlib + OpenCV) for easier development and deployment. While this iteration is just begun and I have yet to port all the previous code on the new platform, I think this will be the final "form" of the project (as long as someone does not volunteer up to develop a nice web application!).
-
-I'm happy to share my code and get in contact with anyone interested to improve or test it, but please keep in mind that this repository is *not* intended for distributing a final product, my aim is just to publicly track development of an *unpretentious educational tool*, so expect bugs, unpolished code and missing features! ;)
-
-# Features
-This list contains the functions that the toolkit will (hopefully) provide once beta stage is reached (**NOTE:** functions displayed in _italics_ inside the program are not yet implemented!).
-
-## Interface
-- Modern Qt-based GUI with multiple tool window management
-- Support for many formats (JPEG, PNG, TIFF, BMP, WebP, PGM, PFM, GIF)
-- Highly responsive image viewer with real-time pan and zoom
-- Many state-of-the-art algorithms to try out interactively
-- Export both visual and textual results of the analysis
-- Extensive online help with explanations and tutorials
-
-## Tools
-
-### General
-- __Original Image__: display the unaltered reference image for visual inspection
-- __File Digest__: retrieve physical file information, crypto and perceptual hashes
-- __Hex Editor__: open an external hexadecimal editor to show and edit raw bytes
-- __Similar Search__: browse online search services to find visually similar images
-
-### Metadata
-- __Header Structure__: dump the file header structure and display an interactive view
-- __EXIF Full Dump__: scan through file metadata and gather all available information
-- __Thumbnail Analysis__: extract optional embedded thumbnail and compare with original
-- __Geolocation Data__: retrieve optional geolocation data and show it on a world map
-
-### Inspection
-- __Enhancing Magnifier__: magnifying glass with enhancements for better identifying forgeries
-- __Channel Histogram__: display single color channels or RGB composite interactive histogram
-- __Global Adjustments__: apply standard image adjustments (brightness, hue, saturation, ...)
-- __Reference Comparison__: open a synchronized double view for comparison with another picture
-
-### Detail
-- __Luminance Gradient__: analyze horizontal/vertical brightness variations across the image
-- __Echo Edge Filter__: use derivative filters to reveal artificial out-of-focus regions
-- __Wavelet Threshold__: reconstruct image with different wavelet coefficient thresholds
-- __Frequency Split__: split image luminance into high and low frequency components
-
-### Colors
-- __RGB/HSV Plots__: display interactive 2D and 3D plots of RGB and HSV pixel values
-- __Space Conversion__: convert RGB channels into HSV/YCbCr/Lab/Luv/CMYK/Gray spaces
-- __PCA Projection__: use color PCA to project pixel onto most salient components
-- __Pixel Statistics__: compute minimum/maximum/average RGB values for every pixel
-
-### Noise
-- __Noise Separation__: estimate and extract different kind of image noise components
-- __Min/Max Deviation__: highlight pixels deviating from block-based min/max statistics
-- __Bit Planes Values__: show individual bit planes to find inconsistent noise patterns
-- __Wavelet Blocking__: shows averaged noise levels in an image to find noise inconsistencies
-- __PRNU Identification__: exploit sensor pattern noise introduced by different cameras
-
-### JPEG
-- __Quality Estimation__: extract quantization tables and estimate last saved JPEG quality
-- __Error Level Analysis__: show pixel-level difference against fixed compression levels
-- __Multiple Compression__: use a machine learning model to detect multiple compression
-- __JPEG Ghost Maps__: highlight traces of different compression levels in difference images
-
-### Tampering
-- __Contrast Enhancement__: analyze color distribution to detect contrast enhancements
-- __Copy-Move Forgery__: use invariant feature descriptors for cloned area detection
-- __Composite Splicing__: exploit DCT statistics for automatic splicing zone detection
-- __Image Resampling__: estimate 2D pixel interpolation for detecting resampling traces
-
-
-### Various
-- __Median Filtering__: detect processing traces left by nonlinear median filtering
-- __Illuminant Map__: estimate scene local light direction on estimated 3D surfaces
-- __Dead/Hot Pixels__: detect and fix dead/hot pixels caused by sensor imperfections
-- __Stereogram Decoder__: decode 3D images concealed in crossed-eye autostereograms
-
-
-# Screenshots
-<p align="center">
-  <img src="screenshots/0_general.png" alt="General"/>
-  <br><b>General</b>: Original Image, Hex Editor, File Digest, Similar Search
-</p>
-
-<p align="center">
-  <img src="screenshots/1_metadata.png" alt="Metadata"/>
-  <br><b>Metadata</b>: EXIF Full Dump, Header Structure
-</p>
-
-<p align="center">
-  <img src="screenshots/2_inspection.png" alt="Inspection"/>
-  <br><b>Inspection</b>: Enhancing Magnifier, Channel Histogram, Reference Comparison
-</p>
-
-<p align="center">
-  <img src="screenshots/3_detail.png" alt="Detail"/>
-  <br><b>Detail</b>: Luminance Gradient, Echo Edge Filter, Wavelet Threshold, Frequency Split
-</p>
-
-<p align="center">
-  <img src="screenshots/4_colors.png" alt="Colors"/>
-  <br><b>Colors</b>: RGB/HSV Plots, Space Conversion, PCA Projection, Pixel Statistics 
-</p>
-
-<p align="center">
-  <img src="screenshots/5_noise.png" alt="Noise"/>
-  <br><b>Noise</b>: Signal Separation, Min/Max Deviation, Bit Plane Values
-</p>
-
-<p align="center">
-  <img src="screenshots/6_jpeg.png" alt="JPEG"/>
-  <br><b>JPEG</b>: Quality Estimation, Error Level Analysis 
-</p>
-
-<p align="center">
-  <img src="screenshots/7_tampering.png" alt="Tampering"/>
-  <br><b>Tampering</b>: Contrast Enhancement, Copy/Move Forgery, Composite Splicing, Median Filtering
-</p>
-
-# Installation
-
-## [1/4] Donwload source code
-
-Clone the current repository into a local folder and change current directory to it.
-
-## [2/4] Virtual environment
-
-For more information about Python Virtual Environments, you can read [here](https://realpython.com/python-virtual-environments-a-primer/) or [here](https://chriswarrick.com/blog/2018/09/04/python-virtual-environments/).
-Choose one of the following method to create a new virtual environment with Python 3.11 for Sherloq.
-
-### [Built-in Virtual Environment](https://docs.python.org/3/library/venv.html)
-Change current directory to Sherloq root, then initialize virtual environment folder:
-```console
-$ python -m venv .venv
-```
-Then activate it:
-#### Linux
-```console
-$ source .venv/bin/activate
-```
-
-#### Windows
-```console
-C:\> .venv\Scripts\activate.bat
-```
-
-### [VirtualEnvWrapper](https://virtualenvwrapper.readthedocs.io/en/latest/)
-
-#### Linux
-```console
-$ sudo apt install python3-distutils python3-dev python3-testresources subversion
+<div class="markdown-heading" dir="auto"><h1 tabindex="-1" class="heading-element" dir="auto" _msttexthash="5211505" _msthash="207">介绍</h1><a id="user-content-introduction" class="anchor" aria-label="永久链接： 简介" href="#introduction" _mstaria-label="523835" _msthash="208"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<p dir="auto">"<font _mstmutation="1" _msttexthash="1916598697" _msthash="209"><em _mstmutation="1" _istranslated="1">法医图像分析是图像科学和领域专业知识的应用，用于在法律事务中解释图像的内容和/或图像本身。具有执法应用的法医图像分析的主要子学科包括：摄影测量、摄影比较、内容分析和图像认证。</em>（成像技术科学工作组）</font></p>
+<p dir="auto" _msttexthash="1840116278" _msthash="210"><strong _istranslated="1">Sherloq</strong> 是一个关于为数字图像取证实施完全集成环境的个人研究项目。它并不是决定图像是否伪造的自动工具（该工具可能永远不会存在......），而是作为实验最新研究论文和研讨会中发现的各种算法的伴侣。</p>
+<p dir="auto" _msttexthash="1602557580" _msthash="211">虽然许多商业解决方案的零售价格很高，而且通常只为执法部门和政府机构保留，但该工具集旨在成为一个可扩展的框架，也是一个起点，适合任何有兴趣在数字信号处理的特定应用中进行实验的人。</p>
+<p dir="auto" _msttexthash="3003858793" _msthash="212">我坚信，<em _istranslated="1">通过隐匿性来确保</em>安全是提供任何类型取证服务的错误方式（即“使用这个专有软件，我向你保证这张照片<em _istranslated="1">是</em>原始的......你得相信我！遵循开源理念，每个人都应该能够自己尝试各种技术，获得知识并分享给社区......如果他们为代码改进做出贡献，那就更好了！:)</p>
+<ul dir="auto">
+<li><a href="#history" _msttexthash="4180722" _msthash="213">历史</a></li>
+<li><a href="#features" _msttexthash="5209451" _msthash="214">特征</a></li>
+<li><a href="#screenshots" _msttexthash="10497227" _msthash="215">屏幕截图</a></li>
+<li><a href="#installation" _msttexthash="5773755" _msthash="216">安装</a></li>
+<li><a href="#updates" _msttexthash="5105724" _msthash="217">更新</a></li>
+<li><a href="#bibliography" _msttexthash="4992754" _msthash="218">书目</a></li>
+</ul>
+<div class="markdown-heading" dir="auto"><h1 tabindex="-1" class="heading-element" dir="auto" _msttexthash="4180722" _msthash="219">历史</h1><a id="user-content-history" class="anchor" aria-label="永久链接： 历史" href="#history" _mstaria-label="344838" _msthash="220"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<p dir="auto" _msttexthash="2672364201" _msthash="221">第一个版本是在 2015 年编写的，使用 C++11 构建了一个具有许多选项的命令行实用程序，但很快就变得过于繁琐且交互性不强。安装 OpenCV、Boost 和 AlgLib 库后，可以使用 CMake 编译该版本。第一个概念验证提供了大约 80% 的计划功能（请参阅下面的完整列表）。</p>
+<p dir="auto" _msttexthash="2328504139" _msthash="222">2017 版在包含新颖算法的同时，主要增加了基于 Qt 的多窗口 GUI，以提供更好的用户体验。可以在屏幕上显示多个分析，并实施了快速缩放/滚动查看器，以便于图像导航。该项目可以使用 Qt Creator 和 Qt 5 和 OpenCV 3 进行编译，并覆盖了大约 70% 的计划功能。</p>
+<p dir="auto" _msttexthash="3024574748" _msthash="223">快进到 2020 年，我决定将所有内容移植到 Python （PySide2 + Matplotlib + OpenCV） 中，以便于开发和部署。虽然这个迭代才刚刚开始，我还没有把所有以前的代码移植到新平台上，但我认为这将是项目的最终“形式”（只要有人不自愿开发一个漂亮的 Web 应用程序！</p>
+<p dir="auto" _msttexthash="1951526083" _msthash="224">我很高兴分享我的代码并与任何有兴趣改进或测试它的人取得联系，但请记住，此存储库<em _istranslated="1">并非</em>用于分发最终产品，我的目标只是公开跟踪一个<em _istranslated="1">朴实无华的教育工具</em>的开发，因此请期待错误、未完善的代码和缺失的功能！;)</p>
+<div class="markdown-heading" dir="auto"><h1 tabindex="-1" class="heading-element" dir="auto" _msttexthash="5209451" _msthash="225">特征</h1><a id="user-content-features" class="anchor" aria-label="永久链接：功能" href="#features" _mstaria-label="370552" _msthash="226"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<p dir="auto" _msttexthash="552823141" _msthash="227">此列表包含工具包在达到 beta 阶段后将（希望）提供的函数（<strong _istranslated="1">注意：</strong>程序内以<em _istranslated="1">斜体</em>显示的函数尚未实现！</p>
+<div class="markdown-heading" dir="auto"><h2 tabindex="-1" class="heading-element" dir="auto" _msttexthash="4554719" _msthash="228">接口</h2><a id="user-content-interface" class="anchor" aria-label="永久链接： Interface" href="#interface" _mstaria-label="396500" _msthash="229"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<ul dir="auto">
+<li _msttexthash="104803764" _msthash="230">基于 Qt 的现代 GUI，具有多个工具窗口管理</li>
+<li _msttexthash="106749240" _msthash="231">支持多种格式（JPEG、PNG、TIFF、BMP、WebP、PGM、PFM、GIF）</li>
+<li _msttexthash="130168441" _msthash="232">具有实时平移和缩放功能的高度响应式图像查看器</li>
+<li _msttexthash="80105688" _msthash="233">许多最先进的算法，可交互式尝试</li>
+<li _msttexthash="53913587" _msthash="234">导出分析的视觉和文本结果</li>
+<li _msttexthash="64201787" _msthash="235">包含说明和教程的广泛在线帮助</li>
+</ul>
+<div class="markdown-heading" dir="auto"><h2 tabindex="-1" class="heading-element" dir="auto" _msttexthash="4356287" _msthash="236">工具</h2><a id="user-content-tools" class="anchor" aria-label="永久链接： 工具" href="#tools" _mstaria-label="278135" _msthash="237"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<div class="markdown-heading" dir="auto"><h3 tabindex="-1" class="heading-element" dir="auto" _msttexthash="5862792" _msthash="238">常规</h3><a id="user-content-general" class="anchor" aria-label="永久链接：常规" href="#general" _mstaria-label="330616" _msthash="239"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<ul dir="auto">
+<li _msttexthash="143474786" _msthash="240"><strong _istranslated="1">原始图像</strong>：显示未更改的参考图像以进行目视检查</li>
+<li _msttexthash="118543113" _msthash="241"><strong _istranslated="1">文件摘要</strong>：检索物理文件信息、加密和感知哈希</li>
+<li _msttexthash="223263053" _msthash="242"><strong _istranslated="1">十六进制编辑器</strong>：打开外部十六进制编辑器以显示和编辑原始字节</li>
+<li _msttexthash="158721888" _msthash="243"><strong _istranslated="1">类似搜索</strong>：浏览在线搜索服务以查找视觉上相似的图像</li>
+</ul>
+<div class="markdown-heading" dir="auto"><h3 tabindex="-1" class="heading-element" dir="auto" _msttexthash="7571863" _msthash="244">元数据</h3><a id="user-content-metadata" class="anchor" aria-label="永久链接：元数据" href="#metadata" _mstaria-label="361218" _msthash="245"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<ul dir="auto">
+<li _msttexthash="170198496" _msthash="246"><strong _istranslated="1">Header Structure</strong>：转储文件头结构并显示交互式视图</li>
+<li _msttexthash="154544247" _msthash="247"><strong _istranslated="1">EXIF 完整转储</strong>：扫描文件元数据并收集所有可用信息</li>
+<li _msttexthash="212039347" _msthash="248"><strong _istranslated="1">缩略图分析</strong>：提取可选的嵌入式缩略图并与原始缩略图进行比较</li>
+<li _msttexthash="207242373" _msthash="249"><strong _istranslated="1">地理位置数据</strong>：检索可选的地理位置数据并将其显示在世界地图上</li>
+</ul>
+<div class="markdown-heading" dir="auto"><h3 tabindex="-1" class="heading-element" dir="auto" _msttexthash="5206344" _msthash="250">检查</h3><a id="user-content-inspection" class="anchor" aria-label="永久链接： 检查" href="#inspection" _mstaria-label="442689" _msthash="251"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<ul dir="auto">
+<li _msttexthash="190997378" _msthash="252"><strong _istranslated="1">增强放大镜</strong>：具有增强功能的放大镜，可更好地识别伪造品</li>
+<li _msttexthash="136755905" _msthash="253"><strong _istranslated="1">通道直方图</strong>：显示单色通道或 RGB 复合交互式直方图</li>
+<li _msttexthash="190011939" _msthash="254"><strong _istranslated="1">全局调整</strong>：应用标准图像调整（亮度、色相、饱和度等）</li>
+<li _msttexthash="141745305" _msthash="255"><strong _istranslated="1">参考比较</strong>：打开同步双视图以与其他图片进行比较</li>
+</ul>
+<div class="markdown-heading" dir="auto"><h3 tabindex="-1" class="heading-element" dir="auto" _msttexthash="6427954" _msthash="256">细节</h3><a id="user-content-detail" class="anchor" aria-label="永久链接： 详情" href="#detail" _mstaria-label="298792" _msthash="257"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<ul dir="auto">
+<li _msttexthash="119111551" _msthash="258"><strong _istranslated="1">明亮度渐变</strong>：分析整个图像的水平/垂直亮度变化</li>
+<li _msttexthash="169108472" _msthash="259"><strong _istranslated="1">Echo Edge Filter</strong>：使用衍生滤镜显示人为的失焦区域</li>
+<li _msttexthash="179590827" _msthash="260"><strong _istranslated="1">Wavelet Threshold</strong>：使用不同的小波系数阈值重建图像</li>
+<li _msttexthash="292136065" _msthash="261"><strong _istranslated="1">Frequency Split（频率分割</strong>）：将图像明亮度分割为高频和低频分量</li>
+</ul>
+<div class="markdown-heading" dir="auto"><h3 tabindex="-1" class="heading-element" dir="auto" _msttexthash="7028164" _msthash="262">颜色</h3><a id="user-content-colors" class="anchor" aria-label="永久链接：颜色" href="#colors" _mstaria-label="307034" _msthash="263"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<ul dir="auto">
+<li _msttexthash="143790478" _msthash="264"><strong _istranslated="1">RGB/HSV 绘图</strong>：显示 RGB 和 HSV 像素值的交互式 2D 和 3D 绘图</li>
+<li _msttexthash="137014111" _msthash="265"><strong _istranslated="1">空间转换</strong>：将 RGB 通道转换为 HSV/YCbCr/Lab/Luv/CMYK/灰度空间</li>
+<li _msttexthash="168990770" _msthash="266"><strong _istranslated="1">PCA 投影</strong>：使用彩色 PCA 将像素投影到大多数突出的组件上</li>
+<li _msttexthash="111862556" _msthash="267"><strong _istranslated="1">像素统计</strong>：计算每个像素的最小/最大/平均 RGB 值</li>
+</ul>
+<div class="markdown-heading" dir="auto"><h3 tabindex="-1" class="heading-element" dir="auto" _msttexthash="4380974" _msthash="268">噪声</h3><a id="user-content-noise" class="anchor" aria-label="永久链接：噪声" href="#noise" _mstaria-label="273325" _msthash="269"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<ul dir="auto">
+<li _msttexthash="116960090" _msthash="270"><strong _istranslated="1">噪声分离</strong>：估计和提取不同类型的图像噪声成分</li>
+<li _msttexthash="218264046" _msthash="271"><strong _istranslated="1">最小/最大偏差</strong>：高亮显示偏离基于块的最小/最大统计数据的像素</li>
+<li _msttexthash="204837009" _msthash="272"><strong _istranslated="1">Bit Planes Values</strong>：显示单个位平面以查找不一致的噪声模式</li>
+<li _msttexthash="156648921" _msthash="273"><strong _istranslated="1">小波阻塞</strong>：显示图像中的平均噪声水平以查找噪声不一致</li>
+<li _msttexthash="127770292" _msthash="274"><strong _istranslated="1">PRNU 识别</strong>：利用不同相机引入的传感器模式噪声</li>
+</ul>
+<div class="markdown-heading" dir="auto"><h3 tabindex="-1" class="heading-element" dir="auto" _msttexthash="7644429" _msthash="275">JPEG 格式</h3><a id="user-content-jpeg" class="anchor" aria-label="永久链接：JPEG" href="#jpeg" _mstaria-label="217282" _msthash="276"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<ul dir="auto">
+<li _msttexthash="131530841" _msthash="277"><strong _istranslated="1">质量估计</strong>：提取量化表并估计上次保存的 JPEG 质量</li>
+<li _msttexthash="140084542" _msthash="278"><strong _istranslated="1">错误级别分析</strong>：显示与固定压缩级别的像素级差异</li>
+<li _msttexthash="110137495" _msthash="279"><strong _istranslated="1">多重压缩</strong>：使用机器学习模型检测多重压缩</li>
+<li _msttexthash="167802596" _msthash="280"><strong _istranslated="1">JPEG 重影图</strong>：突出显示不同图像中不同压缩级别的痕迹</li>
+</ul>
+<div class="markdown-heading" dir="auto"><h3 tabindex="-1" class="heading-element" dir="auto" _msttexthash="5580835" _msthash="281">篡改</h3><a id="user-content-tampering" class="anchor" aria-label="永久链接：篡改" href="#tampering" _mstaria-label="403377" _msthash="282"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<ul dir="auto">
+<li _msttexthash="115440611" _msthash="283"><strong _istranslated="1">对比度增强</strong>：分析颜色分布以检测对比度增强</li>
+<li _msttexthash="216262111" _msthash="284"><strong _istranslated="1">Copy-Move Forgery</strong>：使用不变特征描述符进行克隆区域检测</li>
+<li _msttexthash="141863267" _msthash="285"><strong _istranslated="1">复合拼接</strong>：利用 DCT 统计数据实现自动拼接区域检测</li>
+<li _msttexthash="230714211" _msthash="286"><strong _istranslated="1">Image Resampling</strong>：估计 2D 像素插值，用于检测重采样跟踪</li>
+</ul>
+<div class="markdown-heading" dir="auto"><h3 tabindex="-1" class="heading-element" dir="auto" _msttexthash="5200052" _msthash="287">各种</h3><a id="user-content-various" class="anchor" aria-label="永久链接：各种" href="#various" _mstaria-label="342017" _msthash="288"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<ul dir="auto">
+<li _msttexthash="137288164" _msthash="289"><strong _istranslated="1">中值过滤</strong>：检测非线性中值过滤留下的处理痕迹</li>
+<li _msttexthash="188170333" _msthash="290"><strong _istranslated="1">Illuminant Map</strong>：估计估计的 3D 表面上的场景局部光方向</li>
+<li _msttexthash="184392507" _msthash="291"><strong _istranslated="1">坏点/热像素</strong>：检测并修复由传感器缺陷引起的坏点/热像素</li>
+<li _msttexthash="165020934" _msthash="292"><strong _istranslated="1">立体图解码器</strong>：解码隐藏在斗鸡眼自动立体图中的 3D 图像</li>
+</ul>
+<div class="markdown-heading" dir="auto"><h1 tabindex="-1" class="heading-element" dir="auto" _msttexthash="10497227" _msthash="293">屏幕截图</h1><a id="user-content-screenshots" class="anchor" aria-label="永久链接： 屏幕截图" href="#screenshots" _mstaria-label="484146" _msthash="294"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<p align="center" dir="auto">
+  <a target="_blank" rel="noopener noreferrer" href="/GuidoBartoli/sherloq/blob/master/screenshots/0_general.png"><img src="/GuidoBartoli/sherloq/raw/master/screenshots/0_general.png" alt="常规" style="max-width: 100%;" _mstalt="92651" _msthash="295"></a>
+  <br><font _mstmutation="1" _msttexthash="157756612" _msthash="296"><b _mstmutation="1" _istranslated="1">常规</b>：原始图像、十六进制编辑器、文件摘要、相似搜索</font></p>
+<p align="center" dir="auto">
+  <a target="_blank" rel="noopener noreferrer" href="/GuidoBartoli/sherloq/blob/master/screenshots/1_metadata.png"><img src="/GuidoBartoli/sherloq/raw/master/screenshots/1_metadata.png" alt="元数据" style="max-width: 100%;" _mstalt="110383" _msthash="297"></a>
+  <br><font _mstmutation="1" _msttexthash="72431112" _msthash="298"><b _mstmutation="1" _istranslated="1">元数据</b>：EXIF 完整转储、标头结构</font></p>
+<p align="center" dir="auto">
+  <a target="_blank" rel="noopener noreferrer" href="/GuidoBartoli/sherloq/blob/master/screenshots/2_inspection.png"><img src="/GuidoBartoli/sherloq/raw/master/screenshots/2_inspection.png" alt="检查" style="max-width: 100%;" _mstalt="159224" _msthash="299"></a>
+  <br><font _mstmutation="1" _msttexthash="111706673" _msthash="300"><b _mstmutation="1" _istranslated="1">检测</b>：增强放大镜、通道直方图、参考比较</font></p>
+<p align="center" dir="auto">
+  <a target="_blank" rel="noopener noreferrer" href="/GuidoBartoli/sherloq/blob/master/screenshots/3_detail.png"><img src="/GuidoBartoli/sherloq/raw/master/screenshots/3_detail.png" alt="细节" style="max-width: 100%;" _mstalt="74737" _msthash="301"></a>
+  <br><font _mstmutation="1" _msttexthash="3889418" _msthash="302"><b _mstmutation="1">Detail</b>: Luminance Gradient, Echo Edge Filter, Wavelet Threshold, Frequency Split
+</font></p>
+<p align="center" dir="auto">
+  <a target="_blank" rel="noopener noreferrer" href="/GuidoBartoli/sherloq/blob/master/screenshots/4_colors.png"><img src="/GuidoBartoli/sherloq/raw/master/screenshots/4_colors.png" alt="Colors" style="max-width: 100%;" _mstalt="78949" _msthash="303"></a>
+  <br><font _mstmutation="1" _msttexthash="3256565" _msthash="304"><b _mstmutation="1">Colors</b>: RGB/HSV Plots, Space Conversion, PCA Projection, Pixel Statistics 
+</font></p>
+<p align="center" dir="auto">
+  <a target="_blank" rel="noopener noreferrer" href="/GuidoBartoli/sherloq/blob/master/screenshots/5_noise.png"><img src="/GuidoBartoli/sherloq/raw/master/screenshots/5_noise.png" alt="Noise" style="max-width: 100%;" _mstalt="60320" _msthash="305"></a>
+  <br><font _mstmutation="1" _msttexthash="2311023" _msthash="306"><b _mstmutation="1">Noise</b>: Signal Separation, Min/Max Deviation, Bit Plane Values
+</font></p>
+<p align="center" dir="auto">
+  <a target="_blank" rel="noopener noreferrer" href="/GuidoBartoli/sherloq/blob/master/screenshots/6_jpeg.png"><img src="/GuidoBartoli/sherloq/raw/master/screenshots/6_jpeg.png" alt="JPEG 格式" style="max-width: 100%;" _mstalt="32357" _msthash="307"></a>
+  <br><font _mstmutation="1" _msttexthash="74519458" _msthash="308"><b _mstmutation="1" _istranslated="1">JPEG：</b>质量估计、误差水平分析</font></p>
+<p align="center" dir="auto">
+  <a target="_blank" rel="noopener noreferrer" href="/GuidoBartoli/sherloq/blob/master/screenshots/7_tampering.png"><img src="/GuidoBartoli/sherloq/raw/master/screenshots/7_tampering.png" alt="篡改" style="max-width: 100%;" _mstalt="135122" _msthash="309"></a>
+  <br><font _mstmutation="1" _msttexthash="171434562" _msthash="310"><b _mstmutation="1" _istranslated="1">篡改</b>：对比度增强、复制/移动伪造、复合拼接、中间值过滤</font></p>
+<div class="markdown-heading" dir="auto"><h1 tabindex="-1" class="heading-element" dir="auto" _msttexthash="5773755" _msthash="311">安装</h1><a id="user-content-installation" class="anchor" aria-label="永久链接：安装" href="#installation" _mstaria-label="519259" _msthash="312"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<div class="markdown-heading" dir="auto"><h2 tabindex="-1" class="heading-element" dir="auto" _msttexthash="20505459" _msthash="313">[1/4] 下载源码</h2><a id="user-content-14-donwload-source-code" class="anchor" aria-label="永久链接： [1/4] Donwload 源码" href="#14-donwload-source-code" _mstaria-label="980109" _msthash="314"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<p dir="auto" _msttexthash="200869110" _msthash="315">将当前存储库克隆到本地文件夹，并将当前目录更改为该文件夹。</p>
+<div class="markdown-heading" dir="auto"><h2 tabindex="-1" class="heading-element" dir="auto" _msttexthash="19490497" _msthash="316">[2/4] 虚拟环境</h2><a id="user-content-24-virtual-environment" class="anchor" aria-label="永久链接：[2/4] 虚拟环境" href="#24-virtual-environment" _mstaria-label="1004172" _msthash="317"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<p dir="auto" _msttexthash="561491632" _msthash="318">有关 Python 虚拟环境的更多信息，您可以阅读 <a href="https://realpython.com/python-virtual-environments-a-primer/" rel="nofollow" _istranslated="1">此处</a> 或 <a href="https://chriswarrick.com/blog/2018/09/04/python-virtual-environments/" rel="nofollow" _istranslated="1">此处</a>.
+选择以下方法之一，使用 Python 3.11 for Sherloq 创建新的虚拟环境。</p>
+<div class="markdown-heading" dir="auto"><h3 tabindex="-1" class="heading-element" dir="auto"><a href="https://docs.python.org/3/library/venv.html" rel="nofollow" _msttexthash="20376044" _msthash="319">内置虚拟环境</a></h3><a id="user-content-built-in-virtual-environment" class="anchor" aria-label="Permalink： 内置虚拟环境" href="#built-in-virtual-environment" _mstaria-label="1190735" _msthash="320"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<p dir="auto" _msttexthash="207423450" _msthash="321">将当前目录更改为 Sherloq root，然后初始化虚拟环境文件夹：</p>
+<div class="highlight highlight-text-shell-session notranslate position-relative overflow-auto" dir="auto"><pre>$ <span class="pl-s1">python -m venv .venv</span></pre><div class="zeroclipboard-container">
+    <clipboard-copy aria-label="Copy" class="ClipboardButton btn btn-invisible js-clipboard-copy m-2 p-0 d-flex flex-justify-center flex-items-center" data-copy-feedback="Copied!" data-tooltip-direction="w" value="$ python -m venv .venv" tabindex="0" role="button">
+      <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-copy js-clipboard-copy-icon">
+    <path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"></path><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"></path>
+</svg>
+      <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-check js-clipboard-check-icon color-fg-success d-none">
+    <path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"></path>
+</svg>
+    </clipboard-copy>
+  </div></div>
+<p dir="auto" _msttexthash="25395357" _msthash="322">然后激活它：</p>
+<div class="markdown-heading" dir="auto"><h4 tabindex="-1" class="heading-element" dir="auto" _msttexthash="4796116" _msthash="323">Linux的</h4><a id="user-content-linux" class="anchor" aria-label="永久链接：Linux" href="#linux" _mstaria-label="278421" _msthash="324"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<div class="highlight highlight-text-shell-session notranslate position-relative overflow-auto" dir="auto"><pre>$ <span class="pl-s1"><span class="pl-c1">source</span> .venv/bin/activate</span></pre><div class="zeroclipboard-container">
+    <clipboard-copy aria-label="Copy" class="ClipboardButton btn btn-invisible js-clipboard-copy m-2 p-0 d-flex flex-justify-center flex-items-center" data-copy-feedback="Copied!" data-tooltip-direction="w" value="$ source .venv/bin/activate" tabindex="0" role="button">
+      <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-copy js-clipboard-copy-icon">
+    <path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"></path><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"></path>
+</svg>
+      <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-check js-clipboard-check-icon color-fg-success d-none">
+    <path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"></path>
+</svg>
+    </clipboard-copy>
+  </div></div>
+<div class="markdown-heading" dir="auto"><h4 tabindex="-1" class="heading-element" dir="auto" _msttexthash="5470725" _msthash="325">窗户</h4><a id="user-content-windows" class="anchor" aria-label="永久链接：Windows" href="#windows" _mstaria-label="342394" _msthash="326"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<div class="highlight highlight-text-shell-session notranslate position-relative overflow-auto" dir="auto"><pre><span class="pl-c1">C:\&gt; .venv\Scripts\activate.bat</span></pre><div class="zeroclipboard-container">
+    <clipboard-copy aria-label="Copy" class="ClipboardButton btn btn-invisible js-clipboard-copy m-2 p-0 d-flex flex-justify-center flex-items-center" data-copy-feedback="Copied!" data-tooltip-direction="w" value="C:\> .venv\Scripts\activate.bat" tabindex="0" role="button">
+      <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-copy js-clipboard-copy-icon">
+    <path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"></path><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"></path>
+</svg>
+      <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-check js-clipboard-check-icon color-fg-success d-none">
+    <path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"></path>
+</svg>
+    </clipboard-copy>
+  </div></div>
+<div class="markdown-heading" dir="auto"><h3 tabindex="-1" class="heading-element" dir="auto"><a href="https://virtualenvwrapper.readthedocs.io/en/latest/" rel="nofollow" _msttexthash="24412310" _msthash="327">虚拟环境包装器</a></h3><a id="user-content-virtualenvwrapper" class="anchor" aria-label="永久链接：VirtualEnvWrapper" href="#virtualenvwrapper" _mstaria-label="726076" _msthash="328"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<div class="markdown-heading" dir="auto"><h4 tabindex="-1" class="heading-element" dir="auto" _msttexthash="4796116" _msthash="329">Linux的</h4><a id="user-content-linux-1" class="anchor" aria-label="永久链接：Linux" href="#linux-1" _mstaria-label="278421" _msthash="330"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<div class="highlight highlight-text-shell-session notranslate position-relative overflow-auto" dir="auto"><pre>$ <span class="pl-s1">sudo apt install python3-distutils python3-dev python3-testresources subversion</span>
+$ <span class="pl-s1">wget https://bootstrap.pypa.io/get-pip.py</span>
+$ <span class="pl-s1">sudo python3 get-pip.py</span>
+$ <span class="pl-s1">rm get-pip.py</span>
+$ <span class="pl-s1">sudo pip install virtualenv virtualenvwrapper</span>
+$ <span class="pl-s1"><span class="pl-c1">echo</span> -e <span class="pl-s"><span class="pl-pds">"</span>\n# Python Virtual Environments<span class="pl-pds">"</span></span> <span class="pl-k">&gt;&gt;</span> <span class="pl-k">~</span>/.bashrc</span>
+$ <span class="pl-s1"><span class="pl-c1">echo</span> <span class="pl-s"><span class="pl-pds">"</span>export WORKON_HOME=<span class="pl-smi">$HOME</span>/.virtualenvs<span class="pl-pds">"</span></span> <span class="pl-k">&gt;&gt;</span> <span class="pl-k">~</span>/.bashrc</span>
+$ <span class="pl-s1"><span class="pl-c1">echo</span> <span class="pl-s"><span class="pl-pds">"</span>export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3<span class="pl-pds">"</span></span> <span class="pl-k">&gt;&gt;</span> <span class="pl-k">~</span>/.bashrc</span>
+$ <span class="pl-s1"><span class="pl-c1">echo</span> <span class="pl-s"><span class="pl-pds">"</span>source /usr/local/bin/virtualenvwrapper.sh<span class="pl-pds">"</span></span> <span class="pl-k">&gt;&gt;</span> <span class="pl-k">~</span>/.bashrc</span>
+$ <span class="pl-s1"><span class="pl-c1">source</span> <span class="pl-k">~</span>/.bashrc</span>
+$ <span class="pl-s1">mkvirtualenv sq -p python3</span></pre><div class="zeroclipboard-container">
+    <clipboard-copy aria-label="Copy" class="ClipboardButton btn btn-invisible js-clipboard-copy m-2 p-0 d-flex flex-justify-center flex-items-center" data-copy-feedback="Copied!" data-tooltip-direction="w" value="$ sudo apt install python3-distutils python3-dev python3-testresources subversion
 $ wget https://bootstrap.pypa.io/get-pip.py
 $ sudo python3 get-pip.py
 $ rm get-pip.py
 $ sudo pip install virtualenv virtualenvwrapper
-$ echo -e "\n# Python Virtual Environments" >> ~/.bashrc
-$ echo "export WORKON_HOME=$HOME/.virtualenvs" >> ~/.bashrc
-$ echo "export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3" >> ~/.bashrc
-$ echo "source /usr/local/bin/virtualenvwrapper.sh" >> ~/.bashrc
+$ echo -e &quot;\n# Python Virtual Environments&quot; >> ~/.bashrc
+$ echo &quot;export WORKON_HOME=$HOME/.virtualenvs&quot; >> ~/.bashrc
+$ echo &quot;export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3&quot; >> ~/.bashrc
+$ echo &quot;source /usr/local/bin/virtualenvwrapper.sh&quot; >> ~/.bashrc
 $ source ~/.bashrc
-$ mkvirtualenv sq -p python3
-```
-#### Windows
-1. Download *Python 3.11* setup package from [official site](https://www.python.org/downloads/)
-2. Install ensuring that "Add Python to PATH" and "PIP installation" are enabled
-3. Open *Command Prompt* and enter the following commands:
-```console
-> pip install virtualenv virtualenvwrapper-win
-> mkvirtualenv sq
-```
-### [Conda environment](https://conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html)
-1. Install latest **Miniconda** following instructions from the [official site](https://docs.conda.io/projects/miniconda/en/latest/miniconda-install.html)
-2. Create a new **virtual environment**: `conda create --name sq python=3.11 -y`
-3. **Activate** the `sq` environment: `conda activate sq`
-
-## [3/4] Install dependencies
-
-```console
-pip install -r requirements.txt
-```
-
-## [4/4] Launch program
-```console
-python sherloq.py
-```
-
-NOTE for Linux users: if this error is displayed:
-```
-qt.qpa.plugin: From 6.5.0, xcb-cursor0 or libxcb-cursor0 is needed to load the Qt xcb platform plugin.
+$ mkvirtualenv sq -p python3" tabindex="0" role="button">
+      <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-copy js-clipboard-copy-icon">
+    <path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"></path><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"></path>
+</svg>
+      <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-check js-clipboard-check-icon color-fg-success d-none">
+    <path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"></path>
+</svg>
+    </clipboard-copy>
+  </div></div>
+<div class="markdown-heading" dir="auto"><h4 tabindex="-1" class="heading-element" dir="auto" _msttexthash="5470725" _msthash="331">窗户</h4><a id="user-content-windows-1" class="anchor" aria-label="永久链接：Windows" href="#windows-1" _mstaria-label="342394" _msthash="332"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<ol dir="auto">
+<li _msttexthash="51446850" _msthash="333">从<a href="https://www.python.org/downloads/" rel="nofollow" _istranslated="1">官方网站</a>下载 <em _istranslated="1">Python 3.11</em> 安装包</li>
+<li _msttexthash="97435195" _msthash="334">安装时确保启用“将 Python 添加到 PATH”和“PIP 安装”</li>
+<li _msttexthash="77261977" _msthash="335">打开 <em _istranslated="1">命令提示符</em> 并输入以下命令：</li>
+</ol>
+<div class="highlight highlight-text-shell-session notranslate position-relative overflow-auto" dir="auto"><pre>&gt; <span class="pl-s1">pip install virtualenv virtualenvwrapper-win</span>
+&gt; <span class="pl-s1">mkvirtualenv sq</span></pre><div class="zeroclipboard-container">
+    <clipboard-copy aria-label="Copy" class="ClipboardButton btn btn-invisible js-clipboard-copy m-2 p-0 d-flex flex-justify-center flex-items-center" data-copy-feedback="Copied!" data-tooltip-direction="w" value="> pip install virtualenv virtualenvwrapper-win
+> mkvirtualenv sq" tabindex="0" role="button">
+      <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-copy js-clipboard-copy-icon">
+    <path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"></path><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"></path>
+</svg>
+      <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-check js-clipboard-check-icon color-fg-success d-none">
+    <path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"></path>
+</svg>
+    </clipboard-copy>
+  </div></div>
+<div class="markdown-heading" dir="auto"><h3 tabindex="-1" class="heading-element" dir="auto"><a href="https://conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html" rel="nofollow" _msttexthash="8506693" _msthash="336">Conda 环境</a></h3><a id="user-content-conda-environment" class="anchor" aria-label="永久链接： Conda 环境" href="#conda-environment" _mstaria-label="690456" _msthash="337"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<ol dir="auto">
+<li _msttexthash="77586392" _msthash="338">按照<a href="https://docs.conda.io/projects/miniconda/en/latest/miniconda-install.html" rel="nofollow" _istranslated="1">官方网站</a>上的说明安装最新的 <strong _istranslated="1">Miniconda</strong></li>
+<li><font _mstmutation="1" _msttexthash="42161730" _msthash="339">创建新的<strong _mstmutation="1" _istranslated="1">虚拟环境</strong>：</font><code>conda create --name sq python=3.11 -y</code></li>
+<li><font _mstmutation="1" _msttexthash="21260863" _msthash="340"><strong _mstmutation="1" _istranslated="1">激活</strong>环境：</font><code>sq</code><code>conda activate sq</code></li>
+</ol>
+<div class="markdown-heading" dir="auto"><h2 tabindex="-1" class="heading-element" dir="auto" _msttexthash="28495584" _msthash="341">[3/4] 安装依赖项</h2><a id="user-content-34-install-dependencies" class="anchor" aria-label="永久链接： [3/4] 安装依赖项" href="#34-install-dependencies" _mstaria-label="1030185" _msthash="342"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<div class="highlight highlight-text-shell-session notranslate position-relative overflow-auto" dir="auto"><pre><span class="pl-c1">pip install -r requirements.txt</span></pre><div class="zeroclipboard-container">
+    <clipboard-copy aria-label="Copy" class="ClipboardButton btn btn-invisible js-clipboard-copy m-2 p-0 d-flex flex-justify-center flex-items-center" data-copy-feedback="Copied!" data-tooltip-direction="w" value="pip install -r requirements.txt" tabindex="0" role="button">
+      <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-copy js-clipboard-copy-icon">
+    <path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"></path><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"></path>
+</svg>
+      <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-check js-clipboard-check-icon color-fg-success d-none">
+    <path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"></path>
+</svg>
+    </clipboard-copy>
+  </div></div>
+<div class="markdown-heading" dir="auto"><h2 tabindex="-1" class="heading-element" dir="auto" _msttexthash="17383834" _msthash="343">[4/4] 启动程序</h2><a id="user-content-44-launch-program" class="anchor" aria-label="永久链接： [4/4] 启动程序" href="#44-launch-program" _mstaria-label="728221" _msthash="344"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<div class="highlight highlight-text-shell-session notranslate position-relative overflow-auto" dir="auto"><pre><span class="pl-c1">python sherloq.py</span></pre><div class="zeroclipboard-container">
+    <clipboard-copy aria-label="Copy" class="ClipboardButton btn btn-invisible js-clipboard-copy m-2 p-0 d-flex flex-justify-center flex-items-center" data-copy-feedback="Copied!" data-tooltip-direction="w" value="python sherloq.py" tabindex="0" role="button">
+      <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-copy js-clipboard-copy-icon">
+    <path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"></path><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"></path>
+</svg>
+      <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-check js-clipboard-check-icon color-fg-success d-none">
+    <path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"></path>
+</svg>
+    </clipboard-copy>
+  </div></div>
+<p dir="auto" _msttexthash="129422436" _msthash="345">Linux 用户注意事项：如果显示此错误：</p>
+<div class="snippet-clipboard-content notranslate position-relative overflow-auto"><pre class="notranslate"><code>qt.qpa.plugin: From 6.5.0, xcb-cursor0 or libxcb-cursor0 is needed to load the Qt xcb platform plugin.
 qt.qpa.plugin: Could not load the Qt platform plugin "xcb" in "" even though it was found.
 This application failed to start because no Qt platform plugin could be initialized. Reinstalling the application may fix this problem.
-```
-Run this command from the terminal: `sudo apt install -y libxcb-cursor-dev` 
-
-# Updates
-When a new version is released, update the local working copy using Git, SVN or manually downloading from this repository and (if necessary) update the packages in the virtual environment following [this guide](https://www.activestate.com/resources/quick-reads/how-to-update-all-python-packages/).
-
-# Recommended Resources for Getting Started
-- Paper with practical examples and thoughtful analysis for techniques that have since been implemented in Sherloq: "A Picture's Worth: Digital Image Analysis and Forensics" ([Neal Krawetz](https://www.hackerfactor.com/)) [[paper](http://blackhat.com/presentations/bh-dc-08/Krawetz/Whitepaper/bh-dc-08-krawetz-WP.pdf)]
-- Thesis with practical examples and thoughtful analysis for using the "JPEG Ghosts", "Image Resampling" and "Noise Wavelet Blocking" tools implemented in Sherloq. This work also offers insights towards the use and reliability of AI driven aproaches in Digital Image Forensics. ([UHstudent](https://github.com/UHstudent)) [[paper](https://github.com/UHstudent/digital_image_forensics_thesis/blob/main/Thesis%20text_Digital%20Image%20Forensics-A%20Comparative%20Study%20between%20AI%20and%20traditional%20approaches.pdf)]
-
-# References for Algorithms Implemented in Sherloq
-- Image Resampling: "Exposing Digital Forgeries by Detecting Traces of Re-sampling" (Alin C. Popescu and Hany Farid) [[paper](https://farid.berkeley.edu/downloads/publications/sp05.pdf)]
-- JPEG Ghosts: "Exposing Digital Forgeries from JPEG Ghosts" (H. Farid) [[paper](https://farid.berkeley.edu/downloads/publications/tifs09.pdf)]
-- Noise Wavelet Blocking: "Using noise inconsistencies for blind image forensics" (Babak Mahdian and Stanislav Saic) [[paper](https://www.utia.cas.cz/files/Soutez_09/Saic/Mahdian%20Saic%20_2009_Image-and-Vision-Computingfinal%20final%20version%20.pdf)]
-
-
-# Bibliography
-- "Noiseprint: a CNN-based camera model fingerprint" (Davide Cozzolino, Luisa Verdoliva) [[website](http://www.grip.unina.it/research/83-multimedia_forensics/107-noiseprint.html)]
-- "Two Improved Forensic Methods of Detecting Contrast Enhancement in Digital Images" (Xufeng Lin, Xingjie Wei and Chang-Tsun Li) [[paper](https://d1wqtxts1xzle7.cloudfront.net/45863267/Two_Improved_Forensic_Methods_of_Detecti20160522-6998-1xf1cu.pdf?1463954131=&response-content-disposition=inline%3B+filename%3DTwo_improved_forensic_methods_of_detecti.pdf&Expires=1598306603&Signature=dYuKum8UF2NJS~2Jz2pFObtzdjKfYIcYD4GksLVNN0izhm2k10TVPV~UHKS0DbMLXKaurZPq7uvG~qQwQwwF4JKbY0zoCqZI-p9KZsEMYhlRJrYM8nNQL0V7sHMTLd3aYjNLWup~-i1RzJcJdRqzjU9doGxRJvHdsX6tbwIxNRq3JiYyldaXei4xJSJAbX7EoUOut2uh~jsPnsAbDOIrYpwUhebut-XsN2c5MXargD2UhKxZ3Ifwo4hJvz8Bl2sPys~E8P6vDlqOeEHoeByZms6JQON97EGsCTT5GYF98rQLDbqj0NroYE2zDMGcu9IUp8VV1Fotqci1G6eELTXx6w__&Key-Pair-Id=APKAJLOHF5GGSLRBV4ZA)]
+</code></pre><div class="zeroclipboard-container">
+    <clipboard-copy aria-label="Copy" class="ClipboardButton btn btn-invisible js-clipboard-copy m-2 p-0 d-flex flex-justify-center flex-items-center" data-copy-feedback="Copied!" data-tooltip-direction="w" value="qt.qpa.plugin: From 6.5.0, xcb-cursor0 or libxcb-cursor0 is needed to load the Qt xcb platform plugin.
+qt.qpa.plugin: Could not load the Qt platform plugin &quot;xcb&quot; in &quot;&quot; even though it was found.
+This application failed to start because no Qt platform plugin could be initialized. Reinstalling the application may fix this problem." tabindex="0" role="button">
+      <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-copy js-clipboard-copy-icon">
+    <path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"></path><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"></path>
+</svg>
+      <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-check js-clipboard-check-icon color-fg-success d-none">
+    <path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"></path>
+</svg>
+    </clipboard-copy>
+  </div></div>
+<p dir="auto"><font _mstmutation="1" _msttexthash="46654530" _msthash="346">从终端运行以下命令：</font><code>sudo apt install -y libxcb-cursor-dev</code></p>
+<div class="markdown-heading" dir="auto"><h1 tabindex="-1" class="heading-element" dir="auto" _msttexthash="5105724" _msthash="347">更新</h1><a id="user-content-updates" class="anchor" aria-label="永久链接： 更新" href="#updates" _mstaria-label="336557" _msthash="348"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<p dir="auto" _msttexthash="23097230" _msthash="349">When a new version is released, update the local working copy using Git, SVN or manually downloading from this repository and (if necessary) update the packages in the virtual environment following <a href="https://www.activestate.com/resources/quick-reads/how-to-update-all-python-packages/" rel="nofollow">this guide</a>.</p>
+<div class="markdown-heading" dir="auto"><h1 tabindex="-1" class="heading-element" dir="auto" _msttexthash="27988974" _msthash="350">推荐的入门资源</h1><a id="user-content-recommended-resources-for-getting-started" class="anchor" aria-label="永久链接：推荐的入门资源" href="#recommended-resources-for-getting-started" _mstaria-label="1907282" _msthash="351"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<ul dir="auto">
+<li><font _mstmutation="1" _msttexthash="627811171" _msthash="352">论文，其中包含实际示例和对后来在 Sherloq 中实施的技术的深思熟虑的分析：“A Picture's Worth： Digital Image Analysis and Forensics” （<a href="https://www.hackerfactor.com/" rel="nofollow" _mstmutation="1" _istranslated="1">Neal Krawetz</a>） [<a href="http://blackhat.com/presentations/bh-dc-08/Krawetz/Whitepaper/bh-dc-08-krawetz-WP.pdf" rel="nofollow" _mstmutation="1" _istranslated="1">论文</a>]</font>]</li>
+<li><font _mstmutation="1" _msttexthash="1845012806" _msthash="353">论文包含实际示例和对使用 Sherloq 中实现的“JPEG 重影”、“图像重采样”和“噪声小波块”工具的深思熟虑的分析。这项工作还提供了有关 AI 驱动的方法在数字图像取证中的使用和可靠性的见解。（<a href="https://github.com/UHstudent" _mstmutation="1" _istranslated="1">UH学生</a>）[<a href="https://github.com/UHstudent/digital_image_forensics_thesis/blob/main/Thesis%20text_Digital%20Image%20Forensics-A%20Comparative%20Study%20between%20AI%20and%20traditional%20approaches.pdf" _mstmutation="1" _istranslated="1">论文</a></font>]</li>
+</ul>
+<div class="markdown-heading" dir="auto"><h1 tabindex="-1" class="heading-element" dir="auto" _msttexthash="63834914" _msthash="354">在 Sherloq 中实现的算法的参考</h1><a id="user-content-references-for-algorithms-implemented-in-sherloq" class="anchor" aria-label="永久链接：在 Sherloq 中实现的算法的参考" href="#references-for-algorithms-implemented-in-sherloq" _mstaria-label="2376764" _msthash="355"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<ul dir="auto">
+<li><font _mstmutation="1" _msttexthash="344966128" _msthash="356">图像重新采样：“通过检测重新采样的痕迹来揭露数字伪造” （Alin C. Popescu 和 Hany Farid） [<a href="https://farid.berkeley.edu/downloads/publications/sp05.pdf" rel="nofollow" _mstmutation="1" _istranslated="1">论文</a></font>]</li>
+<li><font _mstmutation="1" _msttexthash="185207490" _msthash="357">JPEG Ghosts： “Exposing Digital Forgeries from JPEG Ghosts” （H. Farid） [<a href="https://farid.berkeley.edu/downloads/publications/tifs09.pdf" rel="nofollow" _mstmutation="1" _istranslated="1">论文</a></font>]</li>
+<li><font _mstmutation="1" _msttexthash="275442219" _msthash="358">噪声小波阻塞：“使用噪声不一致进行盲图像取证”（Babak Mahdian 和 Stanislav Saic）[<a href="https://www.utia.cas.cz/files/Soutez_09/Saic/Mahdian%20Saic%20_2009_Image-and-Vision-Computingfinal%20final%20version%20.pdf" rel="nofollow" _mstmutation="1" _istranslated="1">论文</a></font>]</li>
+</ul>
+<div class="markdown-heading" dir="auto"><h1 tabindex="-1" class="heading-element" dir="auto" _msttexthash="4992754" _msthash="359">书目</h1><a id="user-content-bibliography" class="anchor" aria-label="永久链接： 参考书目" href="#bibliography" _mstaria-label="514852" _msthash="360"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<ul dir="auto">
+<li><font _mstmutation="1" _msttexthash="255025771" _msthash="361">“Noiseprint： a based camera model fingerprint” （Davide Cozzolino， Luisa Verdoliva） [<a href="http://www.grip.unina.it/research/83-multimedia_forensics/107-noiseprint.html" rel="nofollow" _mstmutation="1" _istranslated="1">网站</a></font>]</li>
+<li><font _mstmutation="1" _msttexthash="324966239" _msthash="362">“两种改进的法医方法检测数字图像中的对比度增强” （Xufeng Lin， Xingjie Wei 和 Chang-Tsun Li） [<a href="https://d1wqtxts1xzle7.cloudfront.net/45863267/Two_Improved_Forensic_Methods_of_Detecti20160522-6998-1xf1cu.pdf?1463954131=&amp;response-content-disposition=inline%3B+filename%3DTwo_improved_forensic_methods_of_detecti.pdf&amp;Expires=1598306603&amp;Signature=dYuKum8UF2NJS~2Jz2pFObtzdjKfYIcYD4GksLVNN0izhm2k10TVPV~UHKS0DbMLXKaurZPq7uvG~qQwQwwF4JKbY0zoCqZI-p9KZsEMYhlRJrYM8nNQL0V7sHMTLd3aYjNLWup~-i1RzJcJdRqzjU9doGxRJvHdsX6tbwIxNRq3JiYyldaXei4xJSJAbX7EoUOut2uh~jsPnsAbDOIrYpwUhebut-XsN2c5MXargD2UhKxZ3Ifwo4hJvz8Bl2sPys~E8P6vDlqOeEHoeByZms6JQON97EGsCTT5GYF98rQLDbqj0NroYE2zDMGcu9IUp8VV1Fotqci1G6eELTXx6w__&amp;Key-Pair-Id=APKAJLOHF5GGSLRBV4ZA" rel="nofollow" _mstmutation="1" _istranslated="1">论文</a>]</font>]</li>
+</ul>
+</article></div>
